@@ -9,16 +9,7 @@
 
 %define tde_pkg tde-ebook-reader
 %define tde_prefix /opt/trinity
-%define tde_bindir %{tde_prefix}/bin
-%define tde_datadir %{tde_prefix}/share
-%define tde_docdir %{tde_datadir}/doc
-%define tde_includedir %{tde_prefix}/include
-%define tde_libdir %{tde_prefix}/%{_lib}
-%define tde_mandir %{tde_datadir}/man
-%define tde_tdeappdir %{tde_datadir}/applications/tde
-%define tde_tdedocdir %{tde_docdir}/tde
-%define tde_tdeincludedir %{tde_includedir}/tde
-%define tde_tdelibdir %{tde_libdir}/trinity
+
 
 %undefine __brp_remove_la_files
 %define dont_remove_libtool_files 1
@@ -40,21 +31,15 @@ URL:			http://www.trinitydesktop.org/
 
 License:	GPLv2+
 
-#Vendor:		Trinity Desktop
-#Packager:	Francois Andriot <francois.andriot@free.fr>
 
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/office/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 
 BuildSystem:  	cmake
+
 BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-BuildOption:    -DCMAKE_SKIP_RPATH=OFF
-BuildOption:    -DCMAKE_SKIP_INSTALL_RPATH=OFF
-BuildOption:    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
-BuildOption:    -DCMAKE_INSTALL_RPATH="%{tde_libdir}"
 BuildOption:    -DCMAKE_INSTALL_PREFIX=%{tde_prefix}
-BuildOption:    -DDATA_INSTALL_DIR=%{tde_datadir}/apps
-BuildOption:    -DLIB_INSTALL_DIR=%{tde_libdir}
-BuildOption:    -DSHARE_INSTALL_PREFIX=%{tde_datadir}
+BuildOption:    -DDATA_INSTALL_DIR=%{tde_prefix}/share/apps
+BuildOption:    -DSHARE_INSTALL_PREFIX=%{tde_prefix}/share
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 BuildRequires:	trinity-tdebase-devel >= %{tde_version}
@@ -92,10 +77,10 @@ Main features:
 
 %files
 %defattr(-,root,root,-)
-%{tde_bindir}/tde-ebook-reader
-%{tde_tdeappdir}/tde-ebook-reader.desktop
-%{tde_datadir}/apps/tde-ebook-reader/
-%{tde_mandir}/man1/tde-ebook-reader.1*
+%{tde_prefix}/bin/tde-ebook-reader
+%{tde_prefix}/share/applications/tde/tde-ebook-reader.desktop
+%{tde_prefix}/share/apps/tde-ebook-reader/
+%{tde_prefix}/share/man/man1/tde-ebook-reader.1*
 
 ##########
 
@@ -107,7 +92,7 @@ Summary:	Summary:  TQt3-based development library (shared library)
 This is the core of Summary: , the library that tde-ebook-reader is based on.
 
 %files -n libzlcore-tqt
-%{tde_libdir}/libzlcore-tqt.so.*
+%{tde_prefix}/%{_lib}/libzlcore-tqt.so.*
 
 ##########
 
@@ -119,9 +104,9 @@ Summary:	TQt3-based development library (development files)
 This package contains development files for the Summary:  core.
 
 %files -n libzlcore-tqt-devel
-%{tde_includedir}/zlibrary-tqt/core
-%{tde_libdir}/libzlcore-tqt.la
-%{tde_libdir}/libzlcore-tqt.so
+%{tde_prefix}/include/zlibrary-tqt/core
+%{tde_prefix}/%{_lib}/libzlcore-tqt.la
+%{tde_prefix}/%{_lib}/libzlcore-tqt.so
 
 ##########
 
@@ -133,12 +118,12 @@ This package contains the support files for the core of Summary: , the library
 that the fbreader e-book reader is based on.
 
 %files -n libzlcore-data-tqt
-%{tde_datadir}/zlibrary-tqt/keynames.desktop-tqt.xml
-%{tde_datadir}/zlibrary-tqt/languagePatterns.zip
-%{tde_datadir}/zlibrary-tqt/unicode.xml.gz
-%{tde_datadir}/zlibrary-tqt/default/
-%{tde_datadir}/zlibrary-tqt/encodings/
-%{tde_datadir}/zlibrary-tqt/resources/
+%{tde_prefix}/share/zlibrary-tqt/keynames.desktop-tqt.xml
+%{tde_prefix}/share/zlibrary-tqt/languagePatterns.zip
+%{tde_prefix}/share/zlibrary-tqt/unicode.xml.gz
+%{tde_prefix}/share/zlibrary-tqt/default/
+%{tde_prefix}/share/zlibrary-tqt/encodings/
+%{tde_prefix}/share/zlibrary-tqt/resources/
 
 ##########
 
@@ -151,7 +136,7 @@ Summary:	TQt3-based text model/viewer part (shared library)
 This package provides text model/viewer part of Summary: .
 
 %files -n libzltext-tqt
-%{tde_libdir}/libzltext-tqt.so.*
+%{tde_prefix}/%{_lib}/libzltext-tqt.so.*
 
 ##########
 
@@ -164,9 +149,9 @@ This package contains development files for the Summary:  text model/viewer
 library.
 
 %files -n libzltext-tqt-devel
-%{tde_includedir}/zlibrary-tqt/text
-%{tde_libdir}/libzltext-tqt.la
-%{tde_libdir}/libzltext-tqt.so
+%{tde_prefix}/include/zlibrary-tqt/text
+%{tde_prefix}/%{_lib}/libzltext-tqt.la
+%{tde_prefix}/%{_lib}/libzltext-tqt.so
 
 ##########
 
@@ -178,11 +163,11 @@ This package contains the support files for the text model/viewer part
 of Summary: .
 
 %files -n libzltext-data-tqt
-%{tde_datadir}/zlibrary-tqt/hyphenationPatterns.zip
+%{tde_prefix}/share/zlibrary-tqt/hyphenationPatterns.zip
 
 
 %conf -p
 unset QTDIR QTINC QTLIB
-export PATH="%{tde_bindir}:${PATH}"
-export PKG_CONFIG_PATH="%{tde_libdir}/pkgconfig:${PKG_CONFIG_PATH}"
+export PATH="%{tde_prefix}/bin:${PATH}"
+export PKG_CONFIG_PATH="%{tde_prefix}/%{_lib}/pkgconfig:${PKG_CONFIG_PATH}"
 
